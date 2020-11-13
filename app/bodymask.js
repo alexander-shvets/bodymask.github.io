@@ -11,8 +11,8 @@ async function setup(){
 
 let videoCamera
 
-function driver(){
-    requestAnimationFrame(driver)
+function draw(){
+    requestAnimationFrame(draw)
     if( processing ){
         if( neuralNetwork && videoCamera ){
             processSegments()

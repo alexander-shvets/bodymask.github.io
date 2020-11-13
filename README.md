@@ -3,8 +3,7 @@ BodyMask app
 
 >> Progressive Web Applicatioon (Windows, Mac, Linux, Android, iPhone/iPad)
 
-
-
+[Install app](https://bodymask.github.io/app/)
 
 ### License
 
