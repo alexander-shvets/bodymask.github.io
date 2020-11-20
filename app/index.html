@@ -3,7 +3,6 @@
     <head>
         <title>BodyMask</title>
         <link rel="stylesheet" href="theme.css">
-
         <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs@1.2"></script>
         <script src="https://cdn.jsdelivr.net/npm/@tensorflow-models/body-pix@2.0"></script>
         <script src="bodymask.js"></script>
@@ -11,7 +10,7 @@
     <body onload="setup() && draw()">
 
         <video id="camera"></video>
-        <canvas id="output"></canvas>
+        <canvas></canvas>
 
         <label id="status" onclick="status(null)"></label>
         
@@ -28,4 +27,4 @@
         </ol>
 
     </body>
-</html
+</html>

@@ -1,9 +1,7 @@
-BodyMask app
-------------
+BodyMask
+--------
 
-> Progressive Web Application (Windows, Mac, Linux, Android, iPhone/iPad)
-
-[Install app](https://bodymask.github.io/app/)
+[Online Demo](https://bodymask.github.io/app/)
 
 ### License
 

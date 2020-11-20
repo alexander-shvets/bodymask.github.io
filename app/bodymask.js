@@ -1,76 +1,107 @@
 const {log} = console
 let neuralNetwork
-let processing = true
+let processing = true, canvas
 
 async function setup(){
     status('Loading Neural Network...')
     neuralNetwork = await bodyPix.load()
     status('Neural Network loaded.')
-    return neuralNetwork
+    ([canvas] = document.getElementsByTagName('canvas'))
+    return Boolean( neuralNetwork && canvas )
 }
 
-let videoCamera
+let video, camera
 
 function draw(){
     requestAnimationFrame(draw)
     if( processing ){
-        if( neuralNetwork && videoCamera ){
-            processSegments()
+        if( video && neuralNetwork ){
+            drawBodyMasks()
         }
     }
 }
-
-let camera
 
 async function startCamera(){
     status('Opening Camera...')
     camera = await navigator.mediaDevices
         .getUserMedia({video: {facingMode: "environment"}, audio: false})
         .catch(status)
-    playVideo(camera)
+    startVideo(camera)
     status('Camera started.')
 }
 
-function playVideo(stream, output = window){
-    if (output.document) setStream()
-    else setTimeout(setStream)//output.onload = setStream
-    function setStream(){
-        [videoCamera] = output.document.getElementsByTagName('video');
-        videoCamera.srcObject = stream
-        videoCamera.play()
-    }
-}
-
-function processSegments(){
-    const segmentation = neuralNetwork.segmentMultiPerson( videoCamera )
-
-    const foregroundColor = {r: 255, g: 255, b: 255, a: 255}
-    const backgroundColor = {r: 0, g: 0, b: 0, a: 255}
-    const drawContour = false
-    const mask = bodyPix.toMask(segmentation, foregroundColor, backgroundColor, drawContour)
-    //...
-}
-
-const openWindow = windowName => window.open(
-    './output.html#'+windowName, windowName, 
-    'toolbar=no, scrollbars=no, alwaysRaised, width=320, height=240'
+const to = win => open(
+    'output.html#' + win, win, 
+    'toolbar=no, scrollbars=no, alwaysRaised, width=640, height=480'
 )
 
 function openForegroundWindow(){
-    const output = openWindow('foreground')
+    const output = to('foreground')
     log(output)
-    playVideo(camera, output)
+    startVideo(camera, output)
     output.head.title = 'BodyMask output Foreground'
 }
 
 function openBackgroundWindow(){
-    const output = openWindow('background')
-    playVideo(camera, output)
+    const output = to('background')
+    startVideo(camera, output)
     output.head.title = 'BodyMask output Background'
 }
 
-function status(message){
-    log(message)
+function startVideo(stream, output = window){
+    if (output.document) setStream()
+    else setTimeout(setStream)//output.onload = setStream
+    function setStream(){
+        [video] = output.document.getElementsByTagName('video');
+        video.srcObject = stream
+        video.play()
+    }
+}
+
+function status (message){
+    log (message)
     const uiElement = document.getElementById('status')
     uiElement.innerHTML = message
 }
+
+function drawBodyMasks(){
+    const segmentation = neuralNetwork.segmentMultiPerson( video )
+    log( segmentation )
+
+    const foreground = {r: 255, g: 255, b: 255, a: 255}
+    const background = {r: 0, g: 0, b: 0, a: 255}
+    const contour = false
+    const mask = bodyPix.toMask(
+        segmentation, foreground, background, contour
+    )
+    
+    const opacity = 0.7
+    const flipHorizontal = false
+    const maskBlurAmount = 0
+    bodyPix.drawMask(
+        canvas, video, mask,
+        opacity, maskBlurAmount, flipHorizontal
+    )
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
