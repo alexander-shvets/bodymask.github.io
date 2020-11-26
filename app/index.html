@@ -4,7 +4,10 @@
         <meta charset="utf-8">
         <link rel="manifest" href="manifest.json">
         <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta property="og:image" content="icons/res/mipmap-xxxhdpi/ic_launcher.png">
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <!-- [Chrome feature] Cross-Screen Window Placement for bodymask.github.io until 4 Jan 2021 -->
+        <meta http-equiv="origin-trial" content="AjexztGJ4nvg4rzAbliZS/RjnZ2thkytvXN059ZZJx6dckh9oAZtbaz8mR06zuCoIpiTonx8i9Pof0c9IHQcBAQAAABbeyJvcmlnaW4iOiJodHRwczovL2JvZHltYXNrLmdpdGh1Yi5pbzo0NDMiLCJmZWF0dXJlIjoiV2luZG93UGxhY2VtZW50IiwiZXhwaXJ5IjoxNjA5Nzk2NjMwfQ==">
 
         <title>BodyMask</title>
 
@@ -18,17 +21,17 @@
         <video id="camera"></video>
         <canvas></canvas>
 
-        <label id="status" onclick="status(null)"></label>
-        
+        <label id="status" onclick="status('')">Loading...</label>
+
         <ol>
-            <li><button onclick="startCamera()">
+            <li><button onclick="startCamera() && blur()">
                 Start Camera
             </button></li>
-            <li><button onclick="openForegroundWindow()">
-                Open Foreground Window
+            <li><button onclick="openForegroundWindow() && blur()">
+                Output <b>Foreground</b>
             </button></li>
-            <li><button onclick="openBackgroundWindow()">
-                Open Background Window
+            <li><button onclick="openBackgroundWindow() && blur()">
+                Output <span>Background</span>
             </button></li>
         </ol>
     </body>

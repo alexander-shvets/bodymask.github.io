@@ -1,13 +1,31 @@
-const {log} = console
 let neuralNetwork
 let processing = true, canvas
+const {log, warn, error} = console
 
 async function setup(){
     status('Loading Neural Network...')
     neuralNetwork = await bodyPix.load()
     status('Neural Network loaded.')
-    ([canvas] = document.getElementsByTagName('canvas'))
-    return Boolean( neuralNetwork && canvas )
+    ;[canvas] = document.getElementsByTagName('canvas');
+    detectProjectors()
+    const ok = Boolean(neuralNetwork && canvas)
+    log('setup()', ok)
+    document.querySelector('button').focus()
+    return ok
+}
+
+async function detectProjectors(){
+    if('getScreens' in window){
+        const {screens} = await window.getScreens().catch(status)
+        const externals = screens.filter( ({isInternal}) => 
+            isInternal === false 
+        )
+        const {length} = externals
+        status(`Found ${length} Projector(s).`, '')
+    }else{
+        // status(`Can't antomatically find Projectors. 
+        //         __Drag output windows manually.__`)
+    }
 }
 
 let video, camera
@@ -25,9 +43,14 @@ async function startCamera(){
     status('Opening Camera...')
     camera = await navigator.mediaDevices
         .getUserMedia({video: {facingMode: "environment"}, audio: false})
-        .catch(status)
-    startVideo(camera)
-    status('Camera started.')
+        .catch(status);
+    if( camera ){
+        startVideo(camera)
+        status('Camera started.')
+        return true
+    }else{
+        return false
+    }
 }
 
 const to = win => open(
@@ -40,12 +63,14 @@ function openForegroundWindow(){
     log(output)
     startVideo(camera, output)
     output.head.title = 'BodyMask output Foreground'
+    return Boolean(output)
 }
 
 function openBackgroundWindow(){
     const output = to('background')
     startVideo(camera, output)
     output.head.title = 'BodyMask output Background'
+    return Boolean(output)
 }
 
 function startVideo(stream, output = window){
@@ -58,10 +83,17 @@ function startVideo(stream, output = window){
     }
 }
 
-function status (message){
-    log (message)
-    const uiElement = document.getElementById('status')
-    uiElement.innerHTML = message
+function status(message, style='log'){
+    if(message instanceof Error){
+        error(message)
+        style = 'error'
+        message = message.message
+    } else log(message)
+    const statusTag = document.getElementById('status')
+    statusTag.className = style
+    statusTag.innerHTML = message//('message' in message ? message.message : message)
+        .replaceAll("\n",       "<br/>")
+        .replaceAll(/__(.+)__/g, "<b>$1</b>")
 }
 
 function drawBodyMasks(){
@@ -83,25 +115,3 @@ function drawBodyMasks(){
         opacity, maskBlurAmount, flipHorizontal
     )
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

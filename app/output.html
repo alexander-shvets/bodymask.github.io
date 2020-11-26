@@ -3,9 +3,23 @@
     <head>
         <title>BodyMask Output</title>
         <link rel="stylesheet" href="theme.css">
+        <!-- [Chrome feature] Cross-Screen Window Placement for bodymask.github.io until 4 Jan 2021 -->
+        <meta http-equiv="origin-trial" content="AjexztGJ4nvg4rzAbliZS/RjnZ2thkytvXN059ZZJx6dckh9oAZtbaz8mR06zuCoIpiTonx8i9Pof0c9IHQcBAQAAABbeyJvcmlnaW4iOiJodHRwczovL2JvZHltYXNrLmdpdGh1Yi5pbzo0NDMiLCJmZWF0dXJlIjoiV2luZG93UGxhY2VtZW50IiwiZXhwaXJ5IjoxNjA5Nzk2NjMwfQ==">
     </head>
     <body>
         <video onclick="paused ? play() : pause()"/>
         <canvas></canvas>
     </body>
+    <script>
+        document.ondblclick = toggleFullscreen
+
+        function toggleFullscreen( {target} ){
+            const {fullscreenEnabled, fullscreenElement} = document
+            if( fullscreenEnabled && fullscreenElement ){
+                document.exitFullscreen()
+            }else if('requestFullscreen' in target){
+                target.requestFullscreen({navigationUI: false}).catch(alert)
+            }
+        }
+    </script>
 </html>

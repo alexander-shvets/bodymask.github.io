@@ -3,7 +3,10 @@ body{
     padding: 0px;
     background-color: rgb(30, 31, 28);
     color: white;
-    font-family: Arial, Helvetica, sans-serif
+}
+* {
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: large;
 }
 video{
     position: absolute;
@@ -11,13 +14,29 @@ video{
     height: 100%;
 }
 button{
-    width: 11em;
+    width: 12em;
     background-color: transparent;
     color: white;
     border: 0.5px solid white;
-    border-radius: 5px;
-    padding: 1em;
+    border-radius: 1em;
+    padding: 1em 0px;
+    font-size: medium;
+    cursor: pointer;
 }
+button:focus,
+button > span{
+    color: black;
+    background-color: white;
+    outline: none;
+}
+button > span{
+    padding: 1px 2px;
+    background-color: grey;
+}
+button:focus > span{
+    color: white;
+}
+
 ol{
     position: absolute;
 }
@@ -27,13 +46,24 @@ li{
 
 #status{
     text-align: center;
-    color: rgb(249, 222, 166);
+    color: gray;
     position: absolute;
     width: 100%;
     margin: 2.2em;
     cursor: default;
 }
+#status.info{
+    color: rgb(249, 222, 166);
+}
+#status.warn{
+    color: rgb(253,151,31);
+}
+#status.error{
+    color: rgb(237,101,90);
+}
 
 canvas{
     position: absolute;
+    width: 100%;
+    height: 100%;
 }
