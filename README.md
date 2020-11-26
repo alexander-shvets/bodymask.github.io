@@ -1,5 +1,5 @@
-BodyMask
---------
+Webcam BodyMask app
+-------------------
 
 [Online Demo](https://bodymask.github.io/app/)
 
