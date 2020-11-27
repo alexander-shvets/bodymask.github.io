@@ -96,9 +96,13 @@ function status(message, style='log'){
         .replaceAll(/__(.+)__/g, "<b>$1</b>")
 }
 
-function drawBodyMasks(){
-    const segmentation = neuralNetwork.segmentMultiPerson( video )
-    log( segmentation )
+async function drawBodyMasks(){
+    const segmentation = await neuralNetwork.segmentMultiPerson( video, {
+        flipHorizontal: false,
+        internalResolution: 'medium',
+        segmentationThreshold: 0.7
+      }).catch(warn)
+    //log( segmentation )
 
     const foreground = {r: 255, g: 255, b: 255, a: 255}
     const background = {r: 0, g: 0, b: 0, a: 255}
